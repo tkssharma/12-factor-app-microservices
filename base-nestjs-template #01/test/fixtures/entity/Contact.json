@@ -1,0 +1,18 @@
+[
+  {
+    "id": "305e497f-1e9e-4c0f-9b2b-74b6884ec420",
+    "name": "Business Services",
+    "email": "test@gmail.com",
+    "phone": "test",
+    "created_at": "2021-01-22 12:13:19.484593",
+    "updated_at": "2021-01-22 12:13:19.484593"
+  },
+  {
+    "id": "305e497f-1e9e-4c0f-9b2b-74b6884ec421",
+    "name": "Business Services",
+    "email": "test@gmail.com",
+    "phone": "test",
+    "created_at": "2021-01-22 12:13:19.484593",
+    "updated_at": "2021-01-22 12:13:19.484593"
+  }
+]
