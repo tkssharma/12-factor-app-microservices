@@ -8,38 +8,38 @@ import { UpdateNoteDto } from '../dto/update-note-dto';
 
 @Injectable()
 export class NoteService {
-	constructor(
-		@InjectRepository(Note) private readonly noteRepository: Repository<Note>,
-	) {}
-	async saveNote(dto: CreateNoteDto) {
-		const note = new Note();
-		note.text = dto.text;
-		return await this.noteRepository.save(note);
-	}
+  constructor(
+    @InjectRepository(Note) private readonly noteRepository: Repository<Note>,
+  ) {}
+  async saveNote(dto: CreateNoteDto) {
+    const note = new Note();
+    note.text = dto.text;
+    return await this.noteRepository.save(note);
+  }
 
-	async findAllNotes(findAllOptions: FindManyOptions<Note>) {
-		return await this.noteRepository.find(findAllOptions);
-	}
+  async findAllNotes(findAllOptions: FindManyOptions<Note>) {
+    return await this.noteRepository.find(findAllOptions);
+  }
 
-	async findOneNote(findOneOptions: FindOneOptions<Note>) {
-		return await this.noteRepository.findOne(findOneOptions);
-	}
+  async findOneNote(findOneOptions: FindOneOptions<Note>) {
+    return await this.noteRepository.findOne(findOneOptions);
+  }
 
-	async updateNote(noteId: string, dto: UpdateNoteDto) {
-		const foundNote = await this.findOneNote({
-			where: { noteId },
-		});
-		return await this.noteRepository.save(_.merge(foundNote, dto));
-	}
+  async updateNote(noteId: string, dto: UpdateNoteDto) {
+    const foundNote = await this.findOneNote({
+      where: { noteId },
+    });
+    return await this.noteRepository.save(_.merge(foundNote, dto));
+  }
 
-	async deleteNote(noteId: string) {
-		const foundNote = await this.findOneNote({
-			where: { noteId },
-		});
-    if(foundNote) {
+  async deleteNote(noteId: string) {
+    const foundNote = await this.findOneNote({
+      where: { noteId },
+    });
+    if (foundNote) {
       await this.noteRepository.delete(foundNote?.id);
       return foundNote;
     }
     return null;
-	}
+  }
 }

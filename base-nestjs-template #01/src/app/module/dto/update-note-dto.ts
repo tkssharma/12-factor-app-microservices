@@ -1,4 +1,4 @@
 export class UpdateNoteDto {
-	text!: string;
-	isCompleted!: boolean;
+  text!: string;
+  isCompleted!: boolean;
 }

@@ -12,7 +12,7 @@ import { Item } from '../interface/item.interface';
 
 @Controller('/api/v1/items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) { }
+  constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
   async findAll(): Promise<Item[]> {

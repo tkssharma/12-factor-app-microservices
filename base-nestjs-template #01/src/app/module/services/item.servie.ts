@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Item } from '../interface/item.interface';
 
 @Injectable()
-export default  class ItemsService {
+export default class ItemsService {
   private readonly items: Item[] = [];
 
   findAll(): Item[] {

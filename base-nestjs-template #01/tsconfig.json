@@ -8,7 +8,7 @@
     "target": "es2017",
     "allowJs": true,
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./dist",env.example
     "baseUrl": "./",
     "incremental": true,
     "strict": true,

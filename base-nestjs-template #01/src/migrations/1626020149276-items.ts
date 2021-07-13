@@ -1,9 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class items1626020149276 implements MigrationInterface {
-
   public async up(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`)
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     await queryRunner.query(`
         CREATE TABLE items (
           id uuid NOT NULL DEFAULT uuid_generate_v4(),

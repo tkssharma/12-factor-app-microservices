@@ -15,40 +15,39 @@ export class TestUtils {
   }
 
   public async closeDbConnection() {
-    const connection = (this.databaseService.connection);
+    const connection = this.databaseService.connection;
     if (connection.isConnected) {
-      await (this.databaseService.connection).close();
+      await this.databaseService.connection.close();
     }
   }
 
   public async getEntities() {
     const entities: any = [];
-    this.databaseService.connection.entityMetadatas.forEach(
-      (x) => entities.push({ name: x.name, tableName: x.tableName }),
+    this.databaseService.connection.entityMetadatas.forEach(x =>
+      entities.push({ name: x.name, tableName: x.tableName }),
     );
     return entities;
   }
 
   public async getRandomUser(token: string) {
     switch (token) {
-      // non admin user 
+      // non admin user
       case 'Bearer test':
-        return ({
+        return {
           user_id: 'TEST_1',
-          roles: ['user']
-        });
-        case 'Bearer test 1':
-        return ({
+          roles: ['user'],
+        };
+      case 'Bearer test 1':
+        return {
           user_id: 'TEST_2',
-          roles: ['admin']
-        });
+          roles: ['admin'],
+        };
       default:
-        return ({
+        return {
           user_id: 'TEST_3',
           isRootUser: false,
-        });
+        };
     }
-
   }
   public async reloadFixtures() {
     try {
@@ -63,7 +62,9 @@ export class TestUtils {
   public async cleanAll(entities: any) {
     try {
       for (const entity of entities) {
-        const repository = await this.databaseService.getRepository(entity.name);
+        const repository = await this.databaseService.getRepository(
+          entity.name,
+        );
         await repository.query(`truncate  table  ${entity.tableName} CASCADE`);
       }
     } catch (error) {
@@ -74,8 +75,13 @@ export class TestUtils {
   public async loadAll(entities: any) {
     try {
       for (const entity of entities) {
-        const repository = await this.databaseService.getRepository(entity.name);
-        const fixtureFile = Path.join(__dirname, `../fixtures/entity/${entity.name}.json`);
+        const repository = await this.databaseService.getRepository(
+          entity.name,
+        );
+        const fixtureFile = Path.join(
+          __dirname,
+          `../fixtures/entity/${entity.name}.json`,
+        );
         if (fs.existsSync(fixtureFile)) {
           const items = JSON.parse(fs.readFileSync(fixtureFile, 'utf8'));
           await repository
@@ -86,7 +92,9 @@ export class TestUtils {
         }
       }
     } catch (error) {
-      throw new Error(`ERROR [TestUtils.loadAll()]: Loading fixtures on test db: ${error}`);
+      throw new Error(
+        `ERROR [TestUtils.loadAll()]: Loading fixtures on test db: ${error}`,
+      );
     }
   }
 }

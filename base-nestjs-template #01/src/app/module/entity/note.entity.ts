@@ -1,20 +1,20 @@
 import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'notes' })
 class Note {
-	@PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-	@Column()
+  @Column()
   text!: string;
 
-	@Column({ default: false })
+  @Column({ default: false })
   is_completed!: boolean;
 
   @CreateDateColumn()

@@ -24,9 +24,9 @@ const MOCK_CONFIG: ConfigData = {
     },
   },
   neutrino: {
-      provider: '',
-      user_id: '',
-      api_key: '',
+    provider: '',
+    user_id: '',
+    api_key: '',
   },
   auth: {
     jwksuri: '',
@@ -45,8 +45,15 @@ const MOCK_CONFIG: ConfigData = {
 };
 
 const ALL_ENV_KEYS = [
-  'DB_USER', 'DB_PASSWORD', 'DB_NAME', 'DB_HOST', 'DB_DIALECT',
-  'NODE_ENV', 'ENVIRONMENT', 'LOG_LEVEL', 'NEW_RELIC_KEY',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME',
+  'DB_HOST',
+  'DB_DIALECT',
+  'NODE_ENV',
+  'ENVIRONMENT',
+  'LOG_LEVEL',
+  'NEW_RELIC_KEY',
 ];
 
 describe('ConfigService', () => {
@@ -84,14 +91,21 @@ describe('ConfigService', () => {
       process.env.AUTH_PROVIDER = MOCK_CONFIG.auth.authProvider;
       process.env.AUTH0_JWKS_URL = MOCK_CONFIG.auth.jwksuri;
       process.env.AUTH0_TOKEN_ISSUER_URL = MOCK_CONFIG.auth.tokenIssuer;
-      process.env.AZURE_SEARCH_LOG_STORAGE_CONNECTION_STRING = MOCK_CONFIG.azure.searchLogUpload.connectionString;
-      process.env.AZURE_SEARCH_LOG_STORAGE_CONTAINER_NAME = MOCK_CONFIG.azure.searchLogUpload.containerName;
-      process.env.AZURE_LOGO_STORAGE_CONNECTION_STRING = MOCK_CONFIG.azure.logoUpload.connectionString;
-      process.env.AZURE_LOGO_STORAGE_CONTAINER_NAME = MOCK_CONFIG.azure.logoUpload.containerName;
+      process.env.AZURE_SEARCH_LOG_STORAGE_CONNECTION_STRING =
+        MOCK_CONFIG.azure.searchLogUpload.connectionString;
+      process.env.AZURE_SEARCH_LOG_STORAGE_CONTAINER_NAME =
+        MOCK_CONFIG.azure.searchLogUpload.containerName;
+      process.env.AZURE_LOGO_STORAGE_CONNECTION_STRING =
+        MOCK_CONFIG.azure.logoUpload.connectionString;
+      process.env.AZURE_LOGO_STORAGE_CONTAINER_NAME =
+        MOCK_CONFIG.azure.logoUpload.containerName;
       process.env.BOUNCER_BASE_URL = MOCK_CONFIG.authorization.baseUrl;
-      process.env.BOUNCER_SERVICE_CLIENT_TOKEN = MOCK_CONFIG.authorization.serviceClientToken;
-      process.env.PLATFORM_API_SERVICE_ACTIONS_URL = MOCK_CONFIG.platformApis.baseUrl;
-      process.env.PLATFORM_API_SERVICE_ACTIONS_TOKEN = MOCK_CONFIG.platformApis.token;
+      process.env.BOUNCER_SERVICE_CLIENT_TOKEN =
+        MOCK_CONFIG.authorization.serviceClientToken;
+      process.env.PLATFORM_API_SERVICE_ACTIONS_URL =
+        MOCK_CONFIG.platformApis.baseUrl;
+      process.env.PLATFORM_API_SERVICE_ACTIONS_TOKEN =
+        MOCK_CONFIG.platformApis.token;
 
       config.loadFromEnv();
       chai.expect(config.get()).to.deep.equal({

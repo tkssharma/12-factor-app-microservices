@@ -1,3 +1,3 @@
 export class CreateNoteDto {
-	text!: string;
+  text!: string;
 }

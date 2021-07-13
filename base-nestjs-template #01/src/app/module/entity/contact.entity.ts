@@ -1,9 +1,15 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Contact } from '../interface/contact';
 
-@Entity({name: 'contacts'})
+@Entity({ name: 'contacts' })
 export default class ContactEntity implements Contact {
-
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -11,7 +17,7 @@ export default class ContactEntity implements Contact {
   @Column({
     nullable: false,
     length: 500,
-    unique: true
+    unique: true,
   })
   name!: string;
 
@@ -33,5 +39,4 @@ export default class ContactEntity implements Contact {
 
   @UpdateDateColumn()
   updated_at: any;
-
 }

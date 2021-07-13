@@ -11,7 +11,10 @@ import { DbConfig } from './db.interface';
 import { DatabaseService } from './db.service';
 @Module({})
 export class DbModule {
-  private static getConnectionOptions(config: ConfigService, dbconfig: DbConfig): TypeOrmModuleOptions {
+  private static getConnectionOptions(
+    config: ConfigService,
+    dbconfig: DbConfig,
+  ): TypeOrmModuleOptions {
     const dbdata = config.get().db;
     if (!dbdata) {
       throw new DbConfigError('Database config is missing');
@@ -25,14 +28,17 @@ export class DbModule {
     };
   }
 
-  private static getConnectionOptionsPostgres(dbdata: ConfigDBData): TypeOrmModuleOptions {
+  private static getConnectionOptionsPostgres(
+    dbdata: ConfigDBData,
+  ): TypeOrmModuleOptions {
     return {
       type: 'postgres',
       url: dbdata.url,
       keepConnectionAlive: true,
-      ssl: (process.env.NODE_ENV !== 'local' && process.env.NODE_ENV !== 'test')
-        ? { rejectUnauthorized: false }
-        : false,
+      ssl:
+        process.env.NODE_ENV !== 'local' && process.env.NODE_ENV !== 'test'
+          ? { rejectUnauthorized: false }
+          : false,
     };
   }
 
@@ -43,7 +49,8 @@ export class DbModule {
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule, AppLoggerModule],
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          useFactory: (configService: ConfigService, logger: Logger) => DbModule.getConnectionOptions(configService, dbconfig),
+          useFactory: (configService: ConfigService, logger: Logger) =>
+            DbModule.getConnectionOptions(configService, dbconfig),
           inject: [ConfigService],
         }),
       ],

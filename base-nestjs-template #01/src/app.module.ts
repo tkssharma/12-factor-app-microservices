@@ -4,12 +4,7 @@ import { DomainModule } from './app/module/entity.module';
 import { ConfigModule } from './config/config.module';
 import { AppLoggerModule } from './logger/logger.module';
 @Module({
-  imports: [
-    ConfigModule,
-    DomainModule,
-    AppLoggerModule
-  ],
-  controllers: [AppController]
+  imports: [ConfigModule, DomainModule, AppLoggerModule],
+  controllers: [AppController],
 })
-export class AppModule {
-}
+export class AppModule {}
