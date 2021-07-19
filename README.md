@@ -7,6 +7,8 @@
 | ------------- | ------------- |
 | Baseline  |  |
 | lint & test configurations  |  |
+| migration setup  |  |
+| unit & integration test setup  |  |
 
 ![](snap.png)
 ## Libraries & Technologies
