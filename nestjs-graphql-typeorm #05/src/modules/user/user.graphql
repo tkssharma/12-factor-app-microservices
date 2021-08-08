@@ -1,0 +1,60 @@
+directive @isAuthenticated on FIELD | FIELD_DEFINITION
+directive @hasRole(role: String) on FIELD | FIELD_DEFINITION
+
+enum RoleEnum {
+	MEMBER
+	MANAGER
+	ADMIN
+}
+
+input CreateUserInput {
+	username: String!
+	password: String!
+	email: String!
+}
+
+input UpdateUserInput {
+	username: String
+	password: String
+	email: String
+}
+
+input LoginUserInput {
+	username: String!
+	password: String!
+}
+
+type LoginResponse {
+	token: String!
+}
+
+type User {
+	_id: String!
+	username: String!
+	password: String!
+	email: String!
+	role: RoleEnum!
+	status: Boolean!
+	createdAt: String!
+	updatedAt: String!
+}
+
+type Query {
+	hello: String!
+	me: User @isAuthenticated
+	users(offset: Int!, limit: Int!): [User!] @isAuthenticated
+	user(_id: String!): User @isAuthenticated
+}
+
+type Mutation {
+	register(input: CreateUserInput!): User
+	updateUser(_id: String!, input: UpdateUserInput!): Boolean
+	deleteUser(_id: String!): Boolean @hasRole(role: "admin")
+	deleteUsers: Boolean! @hasRole(role: "admin")
+	login(input: LoginUserInput!): LoginResponse
+	setRole(_id: String!, role: RoleEnum!): Boolean @isAuthenticated
+}
+
+type Subscription {
+	userCreated: User
+}

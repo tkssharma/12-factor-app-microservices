@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { KnexModule, KnexModuleAsyncOptions, KnexModuleOptions } from 'nest-knexjs';
 
 import { ConfigDBData } from '../config/config.interface';
 import { ConfigModule } from '../config/config.module';
@@ -8,22 +9,20 @@ import { Logger } from '../logger/logger';
 import { AppLoggerModule } from '../logger/logger.module';
 import { DbConfigError } from './db.errors';
 import { DbConfig } from './db.interface';
+import knexfile from '../../knexfile';
 @Module({})
 export class DbModule {
   private static getConnectionOptions(
     config: ConfigService,
     dbconfig: DbConfig,
-  ): TypeOrmModuleOptions {
-    const dbdata = config.get().db;
-    if (!dbdata) {
-      throw new DbConfigError('Database config is missing');
-    }
-    const connectionOptions = DbModule.getConnectionOptionsPostgres(dbdata);
+  ): KnexModuleOptions {
+    //@ts-ignore
+    const configOptions = knexfile[process.env.NODE_ENV || 'develop'];
     return {
-      ...connectionOptions,
-      entities: dbconfig.entities,
-      synchronize: false,
-      logging: false,
+      name: process.env.NODE_ENV || 'develop',
+      config: configOptions,
+      retryAttempts: 4,
+      retryDelay: 20000
     };
   }
 
@@ -45,7 +44,7 @@ export class DbModule {
     return {
       module: DbModule,
       imports: [
-        TypeOrmModule.forRootAsync({
+        KnexModule.forRootAsync({
           imports: [ConfigModule, AppLoggerModule],
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           useFactory: (configService: ConfigService, logger: Logger) =>

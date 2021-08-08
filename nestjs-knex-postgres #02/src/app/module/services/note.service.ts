@@ -1,46 +1,61 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions, FindManyOptions } from 'typeorm';
-import Note from '../entity/note.entity';
-import * as _ from 'lodash';
-import { CreateNoteDto } from '../dto/create-note.dto';
-import { UpdateNoteDto } from '../dto/update-note-dto';
+import { PartialType } from "@nestjs/mapped-types";
+
+
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Knex } from 'knex';
+import { InjectModel } from 'nest-knexjs';
+import { CreateUserDto } from "../note/notes.dto";
+
 
 @Injectable()
-export default class NoteService {
-	constructor(
-		@InjectRepository(Note) private readonly noteRepository: Repository<Note>,
-	) {}
-	async saveNote(dto: CreateNoteDto) {
-		const note = new Note();
-		note.text = dto.text;
-    note.is_completed = dto.is_completed;
-		return await this.noteRepository.save(note);
-	}
+export class UsersService {
+  constructor(@InjectModel() private readonly knex: Knex) { }
 
-	async findAllNotes(findAllOptions: FindManyOptions<Note>) {
-		return await this.noteRepository.find(findAllOptions);
-	}
+  async findAll() {
+    const users = await this.knex.table('users');
+    return { users };
+  }
 
-	async findOneNote(findOneOptions: FindOneOptions<Note>) {
-		return await this.noteRepository.findOne(findOneOptions);
-	}
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const users = await this.knex.table('users').insert({
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
+        email: createUserDto.email,
+      });
 
-	async updateNote(noteId: string, dto: UpdateNoteDto) {
-		const foundNote = await this.findOneNote({
-			where: { id: noteId },
-		});
-		return await this.noteRepository.save(_.merge(foundNote, dto));
-	}
+      return { users };
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
+    }
+  }
 
-	async deleteNote(noteId: string) {
-		const foundNote = await this.findOneNote({
-			where: { id: noteId },
-		});
-   if(foundNote) {
-		await this.noteRepository.delete(foundNote);
-		return foundNote;
-   }
-   return null;
-	}
+  async findOne(id: number) {
+    if (!id) {
+      throw new NotFoundException(`User ${id} does not exist`);
+    }
+    const users = await this.knex.table('users').where('id', id);
+    return { users };
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      const users = await this.knex.table('users').where('id', id).update({
+        firstName: updateUserDto.firstName,
+        lastName: updateUserDto.lastName,
+      });
+
+      return { users };
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async remove(id: number) {
+    if (!id) {
+      throw new NotFoundException(`User ${id} does not exist`);
+    }
+    const users = await this.knex.table('users').where('id', id).del();
+    return { users };
+  }
 }

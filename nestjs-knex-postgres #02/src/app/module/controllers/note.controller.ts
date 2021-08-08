@@ -1,76 +1,27 @@
-import {
-	Get,
-	Post,
-	Controller,
-	HttpCode,
-	HttpStatus,
-	Body,
-	Req,
-	Param,
-	ParamData,
-	Patch,
-	Delete,
-  ValidationPipe,
-  UsePipes,
-} from '@nestjs/common';
-import NoteService  from '../services/note.service';
-import { CreateNoteDto, GetNoteById } from '../dto/create-note.dto';
-import { UpdateNoteDto } from '../dto/update-note-dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { UsersService } from '../services/note.service';
 
-@Controller('/api/v1/notes')
-export class NoteController {
-	constructor(private readonly noteService: NoteService) {}
+@Controller('/api/users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) { }
 
-	@Post()
-  @ApiTags('notes')
-  @ApiOperation({ description: 'Get All categories or sub-categories' })
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.CREATED)
-	async saveNote(@Body() dto: CreateNoteDto) {
-		return await this.noteService.saveNote(dto);
-	}
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
 
-  @ApiTags('notes')
-  @Get('/')
-  @ApiOperation({ description: 'Get All categories or sub-categories' })
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.OK)
-	async getAllNote() {
-		return await this.noteService.findAllNotes({});
-	}
+  @Get()
+  findAll() {
+    return this.usersService.findAll();
+  }
 
-  @ApiTags('notes')
-  @ApiOperation({ description: 'Get All categories or sub-categories' })
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.OK)
-	@Get('/:id')
-	async getNoteById(@Param() dto: GetNoteById) {
-		return await this.noteService.findOneNote({
-			where: {
-				id: dto.id,
-			},
-		});
-	}
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(+id);
+  }
 
-  @ApiTags('notes')
-  @ApiOperation({ description: 'Get All categories or sub-categories' })
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.OK)
-	@Patch('/:id')
-	async updateNoteById(
-		@Param() param: GetNoteById,
-		@Body() dto: UpdateNoteDto,
-	) {
-		return await this.noteService.updateNote(param.id, dto);
-	}
-
-  @ApiTags('notes')
-  @ApiOperation({ description: 'delete notes' })
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.OK)
-	@Delete('/:id')
-	async deleteNoteById(@Param() param: GetNoteById,) {
-		return await this.noteService.deleteNote(param.id);
-	}
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(+id, updateUserDto);
+  }
 }
