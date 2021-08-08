@@ -3,30 +3,30 @@ export default {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'dist/src/migrations/*.js',
+      directory: 'src/migrations',
     },
     seeds: {
-      directory: 'dist/src/seeds/*.js',
+      directory: 'src/seeds',
     },
   },
   local: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'dist/src/migrations/*.js',
+      directory: 'src/migrations',
     },
     seeds: {
-      directory: 'dist/src/seeds/*.js',
+      directory: 'src/seeds',
     },
   },
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'dist/src/migrations/*.js',
+      directory: 'src/migrations',
     },
     seeds: {
-      directory: 'dist/src/seeds/*.js',
+      directory: 'src/seeds',
     },
   },
 };

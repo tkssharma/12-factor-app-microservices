@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-cli-baseline",
+  "name": "nestjsclibaseline",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -19,14 +19,11 @@
     "test:cov": "DOTENV_CONFIG_PATH=./env.test  jest --coverage",
     "test:debug": "DOTENV_CONFIG_PATH=./env.test  node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "DOTENV_CONFIG_PATH=./env.test jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.ts",
-    "db:drop": "npm run typeorm:cli schema:drop",
-    "db:migration:generate": "typeorm migration:create -n",
-    "db:create": "ts-node src/scripts/create-database.ts",
-    "db:migration:revert": "npm run typeorm:cli migration:revert",
-    "db:sync": "npm run typeorm:cli schema:sync",
-    "db:migration:run": "typeorm migration:run -t each"
+    "db:rollback": "dotenv -- node_modules/.bin/knex migrate:rollback",
+    "db:migrate:make": "dotenv -- node_modules/.bin/knex migrate:make",
+    "db:migrate:run": "dotenv -- node_modules/.bin/knex migrate:latest",
+    "db:seed:make": "dotenv -- node_modules/.bin/knex seed:make",
+    "db:seed:run": "dotenv -- node_modules/.bin/knex seed:run"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
