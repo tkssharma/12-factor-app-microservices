@@ -13,8 +13,7 @@ import knexfile from '../../knexfile';
 @Module({})
 export class DbModule {
   private static getConnectionOptions(
-    config: ConfigService,
-    dbconfig: DbConfig,
+    config: ConfigService
   ): KnexModuleOptions {
     //@ts-ignore
     const configOptions = knexfile[process.env.NODE_ENV || 'develop'];
@@ -40,7 +39,7 @@ export class DbModule {
     };
   }
 
-  public static forRoot(dbconfig: DbConfig): DynamicModule {
+  public static forRoot(): DynamicModule {
     return {
       module: DbModule,
       imports: [
@@ -48,7 +47,7 @@ export class DbModule {
           imports: [ConfigModule, AppLoggerModule],
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           useFactory: (configService: ConfigService, logger: Logger) =>
-            DbModule.getConnectionOptions(configService, dbconfig),
+            DbModule.getConnectionOptions(configService),
           inject: [ConfigService],
         }),
       ],

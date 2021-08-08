@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { AppModule } from './app.module';
-import { ConfigService } from './config/config.service';
-import { createDocument } from './swagger/swagger';
-import { SwaggerModule } from '@nestjs/swagger';
-require('dotenv').config();
+import { ValidateInputPipe } from './core/pipes/validate.pipe';
 
-import 'reflect-metadata';
-(async () => {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  const configService = app.get(ConfigService);
-  SwaggerModule.setup('api/v1', app, createDocument(app));
-  await app.listen(process.env.port || 3000);
-  console.info('SERVER IS RUNNING ON PORT', process.env.port || 3000);
-})();
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
+  // handle all user input validation globally
+  app.useGlobalPipes(new ValidateInputPipe());
+  await app.listen(3000);
+}
+process.on('unhandledRejection', (reason, p) => {
+  console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason);
+  // application specific logging, throwing an error, or other logic here
+});
+bootstrap();
