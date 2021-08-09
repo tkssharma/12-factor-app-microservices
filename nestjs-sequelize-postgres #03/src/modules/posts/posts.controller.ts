@@ -29,14 +29,14 @@ export class PostsController {
         return post;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Post()
     async create(@Body() post: PostDto, @Request() req): Promise<PostEntity> {
         // create a new post and return the newly created post
         return await this.postService.create(post, req.user.id);
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     async update(@Param('id') id: number, @Body() post: PostDto, @Request() req): Promise<PostEntity> {
         // get the number of row affected and the updated post
@@ -51,7 +51,7 @@ export class PostsController {
         return updatedPost;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     async remove(@Param('id') id: number, @Request() req) {
         // delete the post with this id
