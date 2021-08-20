@@ -1,0 +1,63 @@
+image: node:12-buster-slim
+
+services:
+  - postgres:12.2-alpine
+
+variables:
+  POSTGRES_DB: starter-api-testing
+  POSTGRES_USER: api
+  POSTGRES_PASSWORD: development_pass
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+stages:
+  - build-dev
+  - deploy-dev
+  - build-prod
+  - deploy-prod
+
+build-dev:
+  type: deploy
+  stage: build-dev
+  script:
+    - npm ci
+    - npm run lint
+    - npm run build:prod
+    - npm run test
+  only:
+    - develop
+
+deploy-dev:
+  type: deploy
+  stage: deploy-dev
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$NESTJS_API_APP_DEVELOPMENT --api-key=$HEROKU_API_KEY
+  only:
+    - develop
+
+
+build-prod:
+  type: deploy
+  stage: build-prod
+  script:
+    - npm ci
+    - npm run lint
+    - npm run build:prod
+    - npm run test
+  only:
+    - master
+
+deploy-prod:
+  type: deploy
+  stage: deploy-prod
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$NESTJS_API_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    - master
