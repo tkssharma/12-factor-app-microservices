@@ -40,6 +40,17 @@ working code implementing best practices.
 The twelve-factor methodology is not specific to Node.js and much of these tips
 are already general enough for any cloud.gov application.
 
+- Pin Down NPM Package Versions with Yarn.lock
+- Use Git Flow as a Reliable Version Control Model
+- Manage Configuration Values with Environment Variables
+- Build, Release and Run Containers with Docker Compose
+- Run Stateless Docker Containers
+- Export Services with Docker Port Binding
+- Scale Docker Horizontally with Nginx Load Balancing
+- Ensure Containers Run with High-Availability
+- Run Consistent Dev, Stage & Prod Docker Environments
+- Pipe Log Output to STDOUT with Docker
+
 ## The Twelve Factors
 
 ### [I. Codebase](https://12factor.net/codebase)
